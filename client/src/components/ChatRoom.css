@@ -1,0 +1,12 @@
+.chat-room {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .chat-room {
+    height: 100vh;
+  }
+} 

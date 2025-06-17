@@ -5,11 +5,12 @@ import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import Header from './Header';
 
-const ChatRoom = ({ nickname }) => {
+const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [userCount, setUserCount] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
+  const [roomName, setRoomName] = useState(`방 ${roomId}`);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -22,8 +23,8 @@ const ChatRoom = ({ nickname }) => {
       console.log('서버에 연결되었습니다.');
       setIsConnected(true);
       
-      // 닉네임으로 입장
-      newSocket.emit('join', nickname);
+      // 닉네임과 방 ID로 입장
+      newSocket.emit('join', { nickname, roomId });
     });
 
     // 연결 해제 이벤트
@@ -32,8 +33,14 @@ const ChatRoom = ({ nickname }) => {
       setIsConnected(false);
     });
 
+    // 방 정보 수신
+    newSocket.on('roomInfo', (data) => {
+      setRoomName(data.name);
+    });
+
     // 메시지 수신
     newSocket.on('message', (data) => {
+      console.log('메시지 수신:', data, '현재 사용자:', nickname);
       setMessages(prev => [...prev, { ...data, type: 'message' }]);
     });
 
@@ -62,11 +69,12 @@ const ChatRoom = ({ nickname }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, [nickname]);
+  }, [nickname, roomId]);
 
   // 메시지 전송
   const sendMessage = (message) => {
     if (socket && message.trim()) {
+      console.log('메시지 전송:', message, '사용자:', nickname);
       socket.emit('chatMessage', { message: message.trim() });
     }
   };
@@ -82,7 +90,13 @@ const ChatRoom = ({ nickname }) => {
 
   return (
     <div className="chat-room">
-      <Header userCount={userCount} isConnected={isConnected} />
+      <Header 
+        userCount={userCount} 
+        isConnected={isConnected}
+        roomName={roomName}
+        onBackToRoomList={onBackToRoomList}
+        onBackToNickname={onBackToNickname}
+      />
       <MessageList 
         messages={messages} 
         currentUser={nickname}

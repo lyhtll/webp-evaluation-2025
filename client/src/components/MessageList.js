@@ -4,7 +4,9 @@ import './MessageList.css';
 const MessageList = ({ messages, currentUser, messagesEndRef }) => {
   const getMessageType = (message) => {
     if (message.type === 'system') return 'system';
-    return message.nickname === currentUser ? 'user' : 'other';
+    const isMyMessage = message.nickname === currentUser;
+    console.log('메시지 분류:', message.nickname, 'vs', currentUser, '결과:', isMyMessage ? 'user' : 'other');
+    return isMyMessage ? 'user' : 'other';
   };
 
   return (

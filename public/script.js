@@ -121,7 +121,7 @@ function sendMessage() {
     }
     
     try {
-        socket.emit('chatMessage', { message });
+        socket.emit('chatMessage', { message: message.trim() });
         messageInput.value = '';
     } catch (error) {
         console.error('메시지 전송 중 오류:', error);
@@ -170,4 +170,17 @@ window.addEventListener('beforeunload', () => {
 });
 
 // 초기 설정
-messageInput.focus(); 
+messageInput.focus();
+
+// 채팅 메시지 처리
+socket.on('chatMessage', (data) => {
+    const user = connectedUsers.get(socket.id);
+    if (user) {
+        const messageData = {
+            nickname: user.nickname, // 서버에서 닉네임을 붙임
+            message: data.message,
+            timestamp: new Date().toLocaleTimeString()
+        };
+        io.to(user.roomId).emit('message', messageData);
+    }
+}); 

@@ -11,6 +11,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
   const [userCount, setUserCount] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const [roomName, setRoomName] = useState(`방 ${roomId}`);
+  const [mySocketId, setMySocketId] = useState(null);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
     // 연결 이벤트
     newSocket.on('connect', () => {
       console.log('서버에 연결되었습니다.');
+      setMySocketId(newSocket.id);
       setIsConnected(true);
       
       // 닉네임과 방 ID로 입장
@@ -99,7 +101,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
       />
       <MessageList 
         messages={messages} 
-        currentUser={nickname}
+        mySocketId={mySocketId}
         messagesEndRef={messagesEndRef}
       />
       <MessageInput onSendMessage={sendMessage} />

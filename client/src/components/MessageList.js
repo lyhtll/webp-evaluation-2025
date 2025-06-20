@@ -1,12 +1,10 @@
 import React from 'react';
 import './MessageList.css';
 
-const MessageList = ({ messages, currentUser, messagesEndRef }) => {
+const MessageList = ({ messages, mySocketId, messagesEndRef }) => {
   const getMessageType = (message) => {
     if (message.type === 'system') return 'system';
-    const isMyMessage = message.nickname === currentUser;
-    console.log('메시지 분류:', message.nickname, 'vs', currentUser, '결과:', isMyMessage ? 'user' : 'other');
-    return isMyMessage ? 'user' : 'other';
+    return message.socketId === mySocketId ? 'user' : 'other';
   };
 
   return (
@@ -18,7 +16,7 @@ const MessageList = ({ messages, currentUser, messagesEndRef }) => {
               <div className="system-message">{message.message}</div>
             ) : (
               <>
-                {message.nickname !== currentUser && (
+                {getMessageType(message) === 'other' && (
                   <div className="message-nickname">{message.nickname}</div>
                 )}
                 <div className="message-text">{message.message}</div>

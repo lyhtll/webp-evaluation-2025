@@ -66,7 +66,8 @@ export default function registerChat(io, socket) {
             const messageData = {
                 nickname: user.nickname,
                 message: data.message,
-                timestamp: new Date().toLocaleTimeString()
+                timestamp: new Date().toLocaleTimeString(),
+                socketId: socket.id
             };
             
             // 해당 방에만 메시지 브로드캐스트

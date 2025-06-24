@@ -1,176 +1,185 @@
-.room-list-container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+/* 방 목록 전체 배경 및 레이아웃 */
+.roomlist-outer {
+  max-width: 420px;
+  margin: 40px auto 0 auto;
+  background: #f9f9fb;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 28px 18px 60px 18px;
+  min-height: 70vh;
+  position: relative;
+}
+
+.roomlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.roomlist-header h2 {
+  font-size: 22px;
+  color: #222;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.roomlist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.roomlist-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 14px 18px;
+  transition: box-shadow 0.18s;
+}
+.roomlist-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+}
+.roomlist-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.roomlist-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px;
+}
+.roomlist-card-users {
+  font-size: 13px;
+  color: #888;
+}
+.roomlist-join-btn {
+  background: linear-gradient(90deg, #1976d2 0%, #4f8cff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 20px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-left: 16px;
+}
+.roomlist-join-btn:hover {
+  background: linear-gradient(90deg, #1251a3 0%, #1976d2 100%);
+}
+
+.roomlist-empty {
+  text-align: center;
+  color: #aaa;
+  font-size: 15px;
+  padding: 38px 0 18px 0;
+}
+
+.roomlist-fab {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #1976d2 0%, #4f8cff 100%);
+  color: #fff;
+  font-size: 32px;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s;
+}
+.roomlist-fab:hover {
+  background: linear-gradient(45deg, #1251a3 0%, #1976d2 100%);
+}
+
+/* 모달 스타일 */
+.roomlist-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.roomlist-modal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 32px 24px 24px 24px;
+  min-width: 320px;
+  max-width: 90vw;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-.room-list-header {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.room-list-header h2 {
-  color: #333;
-  margin: 0;
-  font-size: 24px;
-}
-
-.create-room-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.create-room-btn:hover {
-  transform: translateY(-2px);
-}
-
-.create-room-form {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 20px;
+.roomlist-modal-form {
   display: flex;
   gap: 10px;
+  margin-top: 10px;
 }
-
-.create-room-form input {
+.roomlist-modal-form input {
   flex: 1;
-  padding: 12px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-size: 15px;
 }
-
-.create-room-form input:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.create-room-form button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.roomlist-modal-form button {
+  background: #1976d2;
+  color: #fff;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 7px;
+  padding: 8px 18px;
+  font-weight: bold;
+  font-size: 15px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: background 0.18s;
 }
-
-.create-room-form button:hover {
-  transform: translateY(-2px);
+.roomlist-modal-form button:hover {
+  background: #1251a3;
 }
-
-.rooms {
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.room-item {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: transform 0.2s ease;
-}
-
-.room-item:hover {
-  transform: translateY(-2px);
-}
-
-.room-info h3 {
-  color: #333;
-  margin: 0 0 5px 0;
-  font-size: 18px;
-}
-
-.room-users {
-  color: #666;
-  margin: 0;
-  font-size: 14px;
-}
-
-.join-room-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.roomlist-modal-close {
+  margin-top: 18px;
+  background: #eee;
   border: none;
-  padding: 10px 20px;
   border-radius: 8px;
-  font-weight: 600;
+  padding: 6px 18px;
+  font-weight: bold;
+  color: #444;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.join-room-btn:hover {
-  transform: translateY(-2px);
-}
-
-.no-rooms {
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  color: #666;
-}
-
-.no-rooms p {
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-@media (max-width: 768px) {
-  .room-list-container {
-    padding: 15px;
+@media (max-width: 600px) {
+  .roomlist-outer {
+    max-width: 99vw;
+    padding: 10px 2vw 60px 2vw;
   }
-  
-  .room-list-header {
-    padding: 15px;
+  .roomlist-modal {
+    min-width: 90vw;
+    padding: 18px 6vw 18px 6vw;
+  }
+  .roomlist-card {
     flex-direction: column;
-    gap: 15px;
-    text-align: center;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 14px 10px 10px 10px;
   }
-  
-  .room-list-header h2 {
-    font-size: 20px;
-  }
-  
-  .create-room-form {
-    padding: 15px;
-    flex-direction: column;
-  }
-  
-  .room-item {
-    padding: 15px;
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
+  .roomlist-join-btn {
+    width: 100%;
+    margin-left: 0;
   }
 } 

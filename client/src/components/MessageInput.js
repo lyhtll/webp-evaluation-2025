@@ -26,6 +26,7 @@ const MessageInput = ({ onSendMessage }) => {
 
   return (
     <div className="message-input-container">
+      {/* 입력창과 전송 버튼이 들어있는 폼 */}
       <form onSubmit={handleSubmit} className="message-input-form">
         <input
           type="text"

@@ -31,17 +31,14 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
 
     // 서버와 연결되었을 때
     newSocket.on('connect', () => {
-      console.log('서버에 연결되었습니다.');
       setMySocketId(newSocket.id); // 내 소켓 ID 저장
       setIsConnected(true); // 연결 상태 true
       // 서버에 join 이벤트로 닉네임, 방ID 전달
-      console.log('join emit nickname:', nickname);
       newSocket.emit('join', { nickname, roomId });
     });
 
     // 서버와 연결이 끊겼을 때
     newSocket.on('disconnect', () => {
-      console.log('서버와의 연결이 끊어졌습니다.');
       setIsConnected(false);
     });
 
@@ -52,12 +49,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
 
     // 일반 메시지 수신
     newSocket.on('message', (data) => {
-      console.log('클라에서 수신:', data);
-      setMessages(prev => {
-        const newMsg = { ...data, type: 'message' };
-        console.log('setMessages newMsg:', newMsg);
-        return [...prev, newMsg];
-      });
+      setMessages(prev => ([...prev, { ...data, type: 'message' }]));
     });
 
     // 시스템 메시지: 사용자 입장
@@ -77,7 +69,6 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
 
     // 연결 오류 발생 시
     newSocket.on('connect_error', (error) => {
-      console.error('연결 오류:', error);
       alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
     });
 
@@ -90,7 +81,6 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
   // 메시지 전송 함수 (MessageInput에서 호출)
   const sendMessage = (message) => {
     if (socket && message.trim()) {
-      console.log('메시지 전송:', message, '사용자:', nickname);
       socket.emit('chatMessage', { message: message.trim() });
     }
   };
@@ -103,7 +93,6 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
   // 메시지 배열이 바뀔 때마다 자동 스크롤
   useEffect(() => {
     scrollToBottom();
-    console.log('messages 배열 상태:', messages);
   }, [messages]);
 
   // 실제 렌더링되는 UI

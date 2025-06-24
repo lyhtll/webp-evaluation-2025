@@ -13,7 +13,6 @@ const NicknameForm = ({ onJoin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedNickname = nickname.trim();
-    
     // 닉네임이 비었을 때
     if (!trimmedNickname) {
       setError('닉네임을 입력해주세요.');

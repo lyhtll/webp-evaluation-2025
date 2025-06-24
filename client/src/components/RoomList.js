@@ -21,9 +21,11 @@ const RoomList = ({ rooms, onJoinRoom, onCreateRoom }) => {
 
   return (
     <div className="roomlist-outer">
+      {/* 상단 헤더 */}
       <div className="roomlist-header">
         <h2>채팅방 목록</h2>
       </div>
+      {/* 방 목록 카드 리스트 */}
       <div className="roomlist-list">
         {rooms.length === 0 ? (
           // 방이 없을 때 안내 메시지
@@ -37,17 +39,14 @@ const RoomList = ({ rooms, onJoinRoom, onCreateRoom }) => {
                 <div className="roomlist-card-users">👥 {room.userCount}명</div>
               </div>
               {/* 방 입장 버튼 */}
-              <button 
-                className="roomlist-join-btn"
-                onClick={() => onJoinRoom(room.id)}
-              >
-                입장
-              </button>
+              <button className="roomlist-join-btn" onClick={() => onJoinRoom(room.id)}>입장</button>
             </div>
           ))
         )}
       </div>
+      {/* 플로팅 방 생성 버튼 */}
       <button className="roomlist-fab" onClick={() => setShowCreateModal(true)}>＋</button>
+      {/* 방 생성 모달 */}
       {showCreateModal && (
         <div className="roomlist-modal-backdrop" onClick={() => setShowCreateModal(false)}>
           <div className="roomlist-modal" onClick={e => e.stopPropagation()}>

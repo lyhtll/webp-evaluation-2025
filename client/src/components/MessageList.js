@@ -28,14 +28,17 @@ const MessageList = ({ messages, mySocketId, messagesEndRef }) => {
           return (
             <div key={index} className="message other">
               <div className="message-bubble">
+                {/* 상대방 닉네임 */}
                 <div className="message-nickname">{message.nickname}</div>
+                {/* 상대방 메시지(말풍선) */}
                 <div className="message-text">{message.message}</div>
+                {/* 메시지 전송 시간 */}
                 <div className="message-time">{message.timestamp}</div>
               </div>
             </div>
           );
         }
-        // 내 메시지
+        // 내 메시지: 말풍선과 시간(오른쪽 정렬)
         return (
           <div key={index} className="message user">
             <div className="message-text">{message.message}</div>

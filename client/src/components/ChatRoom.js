@@ -24,8 +24,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
       console.log('서버에 연결되었습니다.');
       setMySocketId(newSocket.id);
       setIsConnected(true);
-      
-      // 닉네임과 방 ID로 입장
+      console.log('join emit nickname:', nickname);
       newSocket.emit('join', { nickname, roomId });
     });
 
@@ -42,8 +41,12 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
 
     // 메시지 수신
     newSocket.on('message', (data) => {
-      console.log('메시지 수신:', data, '현재 사용자:', nickname);
-      setMessages(prev => [...prev, { ...data, type: 'message' }]);
+      console.log('클라에서 수신:', data);
+      setMessages(prev => {
+        const newMsg = { ...data, type: 'message' };
+        console.log('setMessages newMsg:', newMsg);
+        return [...prev, newMsg];
+      });
     });
 
     // 사용자 입장
@@ -88,6 +91,7 @@ const ChatRoom = ({ nickname, roomId, onBackToRoomList, onBackToNickname }) => {
 
   useEffect(() => {
     scrollToBottom();
+    console.log('messages 배열 상태:', messages);
   }, [messages]);
 
   return (

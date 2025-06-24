@@ -11,15 +11,17 @@ const MessageList = ({ messages, mySocketId, messagesEndRef }) => {
     <div className="message-list">
       {messages.map((message, index) => (
         <div key={index} className={`message ${getMessageType(message)}`}>
-          <div className="message-content">
+          <div className="message-content" style={{ display: 'flex', flexDirection: 'column', background: '#fff', zIndex: 10 }}>
             {message.type === 'system' ? (
               <div className="system-message">{message.message}</div>
             ) : (
               <>
                 {getMessageType(message) === 'other' && (
-                  <div className="message-nickname">{message.nickname}</div>
+                  <div className="message-nickname" style={{ color: '#333', fontWeight: 'bold' }}>{message.nickname}</div>
                 )}
-                <div className="message-text">{message.message}</div>
+                <div className="message-text" style={{ color: '#111', background: '#fff', fontWeight: 'bold', fontSize: 18 }}>
+                  {message.message}
+                </div>
                 <div className="message-time">{message.timestamp}</div>
               </>
             )}

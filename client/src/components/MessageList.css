@@ -131,4 +131,11 @@
     max-width: 250px;
     font-size: 12px;
   }
+}
+
+.sanitized-warning {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-left: 6px;
+  font-weight: 500;
 } 

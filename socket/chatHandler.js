@@ -1,3 +1,5 @@
+import { processMessage } from './profanityFilter.js';
+
 // 연결된 사용자들을 저장할 Map (모듈 레벨에서 관리)
 const connectedUsers = new Map();
 // 채팅방들을 저장할 Map
@@ -7,6 +9,7 @@ export default function registerChat(io, socket) {
     // 사용자 입장 처리
     socket.on('join', (data) => {
         const { nickname, roomId } = data;
+        console.log('서버 join nickname:', nickname);
         
         // 방이 없으면 생성
         if (!chatRooms.has(roomId)) {
@@ -60,18 +63,50 @@ export default function registerChat(io, socket) {
     });
 
     // 채팅 메시지 처리
-    socket.on('chatMessage', (data) => {
+    socket.on('chatMessage', async (data) => {
         const user = connectedUsers.get(socket.id);
         if (user) {
-            const messageData = {
-                nickname: user.nickname,
-                message: data.message,
-                timestamp: new Date().toLocaleTimeString(),
-                socketId: socket.id
-            };
-            
-            // 해당 방에만 메시지 브로드캐스트
-            io.to(user.roomId).emit('message', messageData);
+            try {
+                // 욕설 필터링 및 순화 적용
+                const processed = await processMessage(data.message);
+                console.log('[욕설 필터링 결과]', {
+                  입력값: data.message,
+                  filteredText: processed.filteredText,
+                  wasSanitized: processed.wasSanitized,
+                  hasProfanity: processed.hasProfanity
+                });
+                
+                const messageData = {
+                    nickname: user.nickname,
+                    filteredText: processed.filteredText,
+                    originalText: data.message, // 사용자가 보낸 원본 메시지
+                    message: processed.filteredText, // 항상 message 필드 포함
+                    timestamp: new Date().toLocaleTimeString(),
+                    socketId: socket.id,
+                    wasFiltered: processed.hasProfanity, // 필터링 여부 표시
+                    wasSanitized: processed.wasSanitized // 순화 여부 표시
+                };
+                
+                console.log('서버에서 emit:', messageData);
+                io.to(user.roomId).emit('message', messageData);
+                
+                if (processed.hasProfanity) {
+                    console.log(`욕설 순화: ${user.nickname}님이 보낸 메시지 "${data.message}"가 순화되었습니다.`);
+                }
+            } catch (error) {
+                console.error('메시지 처리 중 오류:', error);
+                const messageData = {
+                    nickname: user.nickname,
+                    filteredText: data.message,
+                    originalText: data.message,
+                    message: data.message,
+                    timestamp: new Date().toLocaleTimeString(),
+                    socketId: socket.id,
+                    wasFiltered: false,
+                    wasSanitized: false
+                };
+                io.to(user.roomId).emit('message', messageData);
+            }
         }
     });
 

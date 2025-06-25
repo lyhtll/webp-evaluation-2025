@@ -2,11 +2,21 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f8f9fa;
+  background: #f8fafc;
+  position: relative;
+}
+
+.chat-room .message-list {
+  flex: 1;
+  padding-bottom: 80px; /* 입력창 높이만큼 하단 여백 추가 */
 }
 
 @media (max-width: 768px) {
   .chat-room {
     height: 100vh;
+  }
+  
+  .chat-room .message-list {
+    padding-bottom: 70px; /* 모바일에서는 조금 줄임 */
   }
 } 

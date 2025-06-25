@@ -3,29 +3,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   padding: 20px;
 }
 
 .nickname-form {
   background: white;
   padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   text-align: center;
   width: 100%;
   max-width: 400px;
 }
 
 .nickname-form h1 {
-  color: #333;
+  color: #1e293b;
   margin-bottom: 10px;
   font-size: 28px;
   font-weight: 600;
 }
 
 .nickname-form h2 {
-  color: #666;
+  color: #64748b;
   margin-bottom: 30px;
   font-size: 18px;
   font-weight: 400;
@@ -40,37 +40,40 @@
 .nickname-form input {
   width: 100%;
   padding: 15px;
-  border: 2px solid #e1e5e9;
-  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 .nickname-form input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .nickname-form button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .nickname-form button:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .error-message {
-  color: #ff6b6b;
+  color: #ef4444;
   font-size: 14px;
   margin-top: 5px;
 }

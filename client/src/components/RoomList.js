@@ -25,27 +25,47 @@ const RoomList = ({ rooms, onJoinRoom, onCreateRoom }) => {
       <div className="roomlist-header">
         <h2>채팅방 목록</h2>
       </div>
+      
       {/* 방 목록 카드 리스트 */}
       <div className="roomlist-list">
         {rooms.length === 0 ? (
           // 방이 없을 때 안내 메시지
-          <div className="roomlist-empty">아직 생성된 채팅방이 없습니다.<br/>오른쪽 아래 + 버튼으로 방을 만들어보세요!</div>
+          <div className="roomlist-empty">
+            아직 생성된 채팅방이 없습니다.<br/>
+            오른쪽 아래 + 버튼으로 방을 만들어보세요!
+          </div>
         ) : (
           // 방이 있을 때 목록 표시
           rooms.map(room => (
-            <div key={room.id} className="roomlist-card">
+            <div key={room.id} className="roomlist-card" onClick={() => onJoinRoom(room.id)}>
               <div className="roomlist-card-main">
                 <div className="roomlist-card-title">{room.name}</div>
-                <div className="roomlist-card-users">👥 {room.userCount}명</div>
+                <div className="roomlist-card-users">{room.userCount}명 참여 중</div>
               </div>
               {/* 방 입장 버튼 */}
-              <button className="roomlist-join-btn" onClick={() => onJoinRoom(room.id)}>입장</button>
+              <button 
+                className="roomlist-join-btn" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onJoinRoom(room.id);
+                }}
+              >
+                입장
+              </button>
             </div>
           ))
         )}
       </div>
+      
       {/* 플로팅 방 생성 버튼 */}
-      <button className="roomlist-fab" onClick={() => setShowCreateModal(true)}>＋</button>
+      <button 
+        className="roomlist-fab" 
+        onClick={() => setShowCreateModal(true)}
+        title="새 채팅방 만들기"
+      >
+        ＋
+      </button>
+      
       {/* 방 생성 모달 */}
       {showCreateModal && (
         <div className="roomlist-modal-backdrop" onClick={() => setShowCreateModal(false)}>
@@ -56,13 +76,16 @@ const RoomList = ({ rooms, onJoinRoom, onCreateRoom }) => {
                 type="text"
                 value={newRoomName}
                 onChange={(e) => setNewRoomName(e.target.value)}
-                placeholder="방 이름을 입력하세요"
+                placeholder="방 이름을 입력하세요 (최대 30자)"
                 maxLength={30}
                 autoFocus
+                required
               />
-              <button type="submit">생성</button>
+              <button type="submit">방 만들기</button>
             </form>
-            <button className="roomlist-modal-close" onClick={() => setShowCreateModal(false)}>닫기</button>
+            <button className="roomlist-modal-close" onClick={() => setShowCreateModal(false)}>
+              취소
+            </button>
           </div>
         </div>
       )}

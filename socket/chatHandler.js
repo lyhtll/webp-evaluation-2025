@@ -5,6 +5,18 @@ const connectedUsers = new Map();
 // 채팅방 정보를 저장하는 Map (roomId -> 방 정보)
 const chatRooms = new Map();
 
+// 시간을 "오후 3시 30분 45초" 형식으로 변환하는 함수
+function formatTime(date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    
+    const ampm = hours >= 12 ? '오후' : '오전';
+    const displayHours = hours % 12 || 12;
+    
+    return `${ampm} ${displayHours}시 ${minutes.toString().padStart(2, '0')}분 ${seconds.toString().padStart(2, '0')}초`;
+}
+
 // 채팅 관련 이벤트를 등록하는 함수 (io: Socket.io 서버, socket: 개별 클라이언트 소켓)
 export default function registerChat(io, socket) {
     // 사용자가 채팅방에 입장할 때 처리
@@ -48,7 +60,7 @@ export default function registerChat(io, socket) {
         io.to(roomId).emit('userJoined', {
             nickname: nickname,
             message: `${nickname}님이 입장하셨습니다.`,
-            timestamp: new Date().toLocaleTimeString()
+            timestamp: formatTime(new Date())
         });
         
         // 방의 현재 접속자 수를 갱신하여 전송
@@ -83,7 +95,7 @@ export default function registerChat(io, socket) {
                     filteredText: processed.filteredText,
                     originalText: data.message, // 사용자가 보낸 원본 메시지
                     message: processed.filteredText, // 항상 필터링된 메시지 포함
-                    timestamp: new Date().toLocaleTimeString(),
+                    timestamp: formatTime(new Date()),
                     socketId: socket.id,
                     wasFiltered: processed.hasProfanity, // 필터링 여부
                     wasSanitized: processed.wasSanitized // 순화 여부
@@ -103,7 +115,7 @@ export default function registerChat(io, socket) {
                     filteredText: data.message,
                     originalText: data.message,
                     message: data.message,
-                    timestamp: new Date().toLocaleTimeString(),
+                    timestamp: formatTime(new Date()),
                     socketId: socket.id,
                     wasFiltered: false,
                     wasSanitized: false
@@ -165,7 +177,7 @@ export default function registerChat(io, socket) {
                     io.to(user.roomId).emit('userLeft', {
                         nickname: user.nickname,
                         message: `${user.nickname}님이 퇴장하셨습니다.`,
-                        timestamp: new Date().toLocaleTimeString()
+                        timestamp: formatTime(new Date())
                     });
                     
                     // 방의 현재 접속자 수 갱신

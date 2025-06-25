@@ -1,5 +1,5 @@
 {
-  "name": "web-express",
+  "name": "webp-chat-app",
   "version": "1.0.0",
   "type": "module",
   "main": "app.js",
@@ -10,6 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client && npm run build",
     "install-client": "cd client && npm install",
+    "install-all": "npm install && npm run install-client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

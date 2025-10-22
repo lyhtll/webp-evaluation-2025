@@ -110,6 +110,7 @@ export default function registerChat(io, socket) {
             } catch (error) {
                 // 필터링 처리 중 오류 발생 시 원본 메시지 그대로 전송
                 console.error('메시지 처리 중 오류:', error);
+                console.error(error)
                 const messageData = {
                     nickname: user.nickname,
                     filteredText: data.message,
